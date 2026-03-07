@@ -1,0 +1,1457 @@
+\documentclass[12pt,a4paper]{article}%
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[singlespacing]{setspace}
+\usepackage{geometry}%
+\setcounter{MaxMatrixCols}{30}
+%TCIDATA{OutputFilter=latex2.dll}
+%TCIDATA{Version=5.50.0.2960}
+%TCIDATA{CSTFile=40 LaTeX article.cst}
+%TCIDATA{Created=Saturday, April 12, 2014 14:08:00}
+%TCIDATA{LastRevised=Friday, February 27, 2026 11:30:15}
+%TCIDATA{<META NAME="GraphicsSave" CONTENT="32">}
+%TCIDATA{<META NAME="SaveForMode" CONTENT="1">}
+%TCIDATA{BibliographyScheme=Manual}
+%TCIDATA{<META NAME="DocumentShell" CONTENT="Standard LaTeX\Standard LaTeX Article">}
+%TCIDATA{Language=American English}
+%TCIDATA{PageSetup=72,72,72,72,0}
+%TCIDATA{ComputeDefs=
+%$z_{t}$
+%}
+%BeginMSIPreambleData
+\providecommand{\U}[1]{\protect\rule{.1in}{.1in}}
+%EndMSIPreambleData
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}{Criterion}
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+\newenvironment{proof}[1][Proof]{\noindent\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+\geometry{left=1in,right=1in,top=1in,bottom=1in}
+\begin{document}
+\textbf{HOMEWORK: MONETARY\ AND\ FINANCIAL\ ECONOMICS (Instructor: JB
+Chatelain)}
+
+The aim of this homework is to investigate (1) regime switching of
+time-varying persistence (delay to revert to the mean equilibrium) and of (2)
+regime-switching time-varying effects of feedback policy rules on policy
+targets and (3) the identification issues of reverse causality due to negative
+feedback leading to an opposite expected sign (for example, the price puzzle
+in VAR models). There are examples of former homeworks on the EPI and some
+former code with not exactly the same questions.
+
+Answers can be written in french or english to be uploaded on the EPI on the
+scheduled deadline day after feedback of your delegate. It is the
+EPI\ "Monetary and Financial Macroeconomics" (access code for non-Paris1
+registration is "monetary" or "Monetary"). You upload:
+
+(1) Your full logbook in Word and also saved in pdf (with unlimited number of
+pages) of artificial intelligence\ large language models (ChatGPT, Claude,
+Deepseek, Mistral, Grok, Perplexity, Gemini,...) help, copying and pasting all
+your prompts and answers while doing this homework. At the top, add 1 to
+4\ pages summary at the very beginning highlighting what was mostly missing
+from the AI answers. See more precisely question 1 on solving the price puzzle
+with the help of artificial intelligence.
+
+(2) Pdf file of your text answering question below, with at the end, a copy
+and paste of your code and of its automatic translations using IA in the 3
+other languages among the four languages: Python, R, Stata, SAS.\ 
+
+(3) data set in Excel
+
+(4) data set your software format, for example dta for Stata, for replication.
+
+(5) code of the estimations run on the data set in your software format for
+replication in STATA, R, Python \textbf{should be instantly run for
+replication by the instructor using your code.}
+
+The work is to be done individually. If you use monetary aggregates, you
+should use their GROWTH rate. For other consumer or stock market prices
+indices, you should use their GROWTH rates (inflation or returns) discrete or
+continuous (differences of natural logarithm).
+
+\textbf{Table 1: Suggestions for groups to be chosen, other countries (your
+own country) and other variables welcome (monitoring exchange rate by the
+Central Bank of emerging economies, for example):}%
+
+\begin{tabular}
+[t]{|c|c|c|c|c|}\hline
+& Target $"\pi_{t}"$ & Instrument $"i_{t}"$ & Country & Frequency\\\hline
+Afshar & Inflation CPI & Funds rate & US & Quarterly\\\hline
+Battesti & Inflation\ CPI & Funds rate & Malta or Cyprus & Quarterly\\\hline
+Bornier & Inflation\ CPI & Funds rate & France & Quarterly\\\hline
+Esposito & Inflation CPI & Funds rate & Euro area & Quarterly\\\hline
+Godo & Inflation\ CPI & Funds rate & Sweden & Quarterly\\\hline
+Landini & Inflation\ CPI & Funds rate & Japan & Quarterly\\\hline
+Lobo & Inflation CPI & Funds rate & Honduras & Quarterly\\\hline
+Mitrofanoff & Inflation\ CPI & Funds rate & Germany & Quarterly\\\hline
+Moncorge & Inflation\ CPI & Funds rate & Portugal & Quarterly\\\hline
+Rahal & Inflation CPI & Funds rate & Poland & Quarterly\\\hline
+Robertson & Inflation\ CPI & Funds rate & Serbia & Quarterly\\\hline
+Uberti & Inflation\ CPI & Funds rate & UK & Quarterly\\\hline
+Wei & Inflation CPI & Funds rate & China & Quarterly\\\hline
+Wolff & Inflation CPI & Funds rate & Canada & Quarterly\\\hline
+Yahiaoui & Inflation\ CPI & Funds rate & Italy & Quarterly\\\hline
+Zhou & Inflation\ CPI & Funds rate & Spain & Quarterly\\\hline
+17 & Private credit/GDP & Funds rate & UK & Quarterly\\\hline
+18 & Public debt/GDP & Funds rate & US & Quarterly\\\hline
+19 & Public debt/GDP & Funds rate & France & Quarterly\\\hline
+20 & Public debt/GDP & Funds rate & Euro area & Quarterly\\\hline
+21 & Public debt/GDP & Funds rate & UK & Quarterly\\\hline
+22 & Public debt/GDP & Deficits,surplus/gdp & US & Quarterly\\\hline
+23 & Public debt/GDP & Deficits,surplus/gdp & France & Quarterly\\\hline
+24 & Public debt/GDP & Deficits,surplus/gdp & Euro area & Quarterly\\\hline
+25 & Public debt/GDP & Deficits,surplus/gdp & UK & Quarterly\\\hline
+\end{tabular}
+
+
+You may propose two other time series involving feedback from another country
+to the professor.
+
+You can answer using the TEX file of the homework to begin with or copy it in
+Word and use Word for your report and then transform it in pdf.
+
+ADDITIONAL\ FILES on the EPI:
+
+This text: Homework: in PDF, in TEX
+
+EXAMPLES\ FOR\ HELP:
+
+mavroeidis2010.dta , provides data in Stata format.
+
+2018mavroeidisJBexamrolling09.do, Stata code for rolling windows regressions,
+summary statistics and correlation.
+
+2018 Violon HOMEWORK.pdf: old example of answers of the homework with some
+DIFFERENT questions.
+
+\section{Questions}
+
+\begin{enumerate}
+At the beginning, fill in this summary table once you are done with all questions:
+\end{enumerate}%
+
+\begin{tabular}
+[t]{|c|c|c|}\hline
+Country/frequency & USA & Quarterly\\\hline
+Number of observ.: & Target $"\pi_{t}"$: & Instrument $"i_{t}"$:\\\hline
+$T=160$ & Inflation CPI & Funds rate\\\hline
+Beginning & 1981Q1 & 1981Q1\\\hline
+End & 2020Q4 & 2020Q4\\\hline
+AR(1) coeff & $\rho=0.97$ & $\rho=0.96$\\\hline
+AR(1) of residuals & $0.50$ & $0.30$\\\hline
+AR(2) lag1 coeff & $1.47$ & $1.30$\\\hline
+AR(2) lag2 coeff & $-0.50$ & $-0.34$\\\hline
+1st order SISO & $A=0.8$ & $F=0.5$\\\hline
+& $B=0.1$ & $BF=0.05>0$\\\hline
+Instrumental variables & Oil price (for example) & Romer shocks\\\hline
+Indirect least squares & $B=0.3$ & $F=2$\\\hline
+&  & $BF=0.6>0$\\\hline
+\end{tabular}
+
+
+\bigskip\textbf{PART 1: LLM\ logbook of all prompts and answers (an incomplete
+logbook leads to reduction of the grade).}
+
+\begin{enumerate}
+\item Upload LLM logbook into a specific Word then saved as pdf files. Copy in
+a separate Word file (uploaded as pdf on the EPI) with unlimited number of
+pages: (1) At the top write your own final summary of what was finally useful
+or missing using AI. (2) Then, you copy all the answers to all your prompts
+from any LLM: Chatgpt, Deepseek, Claude, Mistral AI, Grok, Perplexity, Gemini.
+Please copy and paste as many of your prompts and answers as possible for
+code, text, translation, concepts, and so on. The aim is helping you to solve
+the price puzzle in VAR and the statistical codes they propose and their
+translation for Python, R, Stata and SAS.
+
+\textbf{PART\ 2: Translation using LLM\ in order to have 3\ codes: Python,
+Stata, R and database in format for instant running and replication (to be
+done at the very end of your work).}
+
+\item Translate your code so that you upload 3\ versions Python R and Stata of
+code plus databases in required format for instant replication when running
+the code.
+
+\textbf{PART\ 3: Use LLM\ to address the VAR price puzzle due to the reverse
+causality of monetary policy feedback rules (to be done first).}
+
+\item Do a synthetic table of the 20 and more methods proposed for the prompt
+"propose 20 detailed methods, ordered by their efficiency, to solve the price
+puzzle using VAR models for each case with "why and how" precisions with a
+related paper as a reference for each method [check the reference does exist]"
+using recursively (copying the answer in another LLM asking for improvement)
+for at least 4 LLM. Then ask the prompt "Sort your methods by categories for
+example: (A) additional variables and more lags, (B) data transformation, (C)
+Identification strategies, (D) different estimation methods of VAR (E)
+others." Then ask prompt: "which theoretical mechanism and/or explain how and
+why these methods may solve the price puzzle." Then ask prompts with correct
+exact reference and download your preferred paper. Remark: there is a
+meta-analysis by Havranek and others on the price puzzle.
+
+(2) Then select one paper to replicate one estimation on Mendeley or Harvard
+replication or on the website of the published paper or anywhere for the last
+open question at the end of the homework. Explain why you select it. Pay
+attention, you may need to download a few OTHER\ TIMES\ SERIES to apply their
+method, check if these time series are available for your country and download
+them at the same time than the CPI\ et the funds rate.
+
+\textbf{PART 4: Your example}
+
+\item Expand the data base for proxies of your policy target inflation and
+your policy target for the longest period without spending too much time.
+Provide the link to the database (FRED, ECB, BdF, BoE, IMF, WB and so on)
+related to your time series. For example, do no use the CPI index but its
+growth rate (or difference of log) which measure inflation. By default, you
+may use quarterly frequency data instead of monthly, as in the last question,
+you may expand variables adding quarterly output measures.
+
+\item Check if there is seasonal adjustement or not: you may regress your time
+series on seasonal dummies. Check if the scale of the time series is
+comparable: for example, if monthly inflation is not "annualized" i.e.
+multiplied by 12 to have an "annual" scale for this monthly data, whereas the
+monthly Fed's funds rate is multiplied by 12. Then multiply monthly inflation
+by 12, because in regressions, the ratio of standard errors of each variables
+will be multiplied or divided by 12 because of these difference of scale. Then
+the Taylor rule parameter may be multiplied by 12\ with monthly or by 4\ with
+quarterly data.
+
+\item Copy a plot of the two time series over time to check consistency with
+answer 3. If you have done the correction, annualized funds rate should not be
+too far from annualized inflation.
+
+\item Report in a table univariate summary statistics: min max mean median
+standard errors of policy target and policy instrument.
+
+\item Estimate on the full period an AR(1) process and estimate the
+auto-correlation of its residual (let's denote it: AR(1)-AR(1)). Remark: all
+the equation taken from the cours are in deviation from the steady state mean,
+you should keep everywhere intercepts for these means:%
+\begin{align*}
+\pi_{t+1} &  =\lambda_{\pi}\pi_{t}+u_{t+1}\text{ with }u_{t+1}=\rho_{\pi}%
+u_{t}+\varepsilon_{t+1}\\
+\text{ }i_{t+1} &  =\lambda_{i}i_{t}+u_{t+1}\text{ with }u_{t+1}=\rho_{i}%
+u_{t}+\varepsilon_{t+1}%
+\end{align*}
+
+
+Additional: if you consider inflation also estimate the auto-regressive AR(1)
+equation for output or output gap or economic growth (and conversely)%
+\[
+x_{t+1}=\lambda_{x}x_{t}+u_{t+1}\text{ with }u_{t+1}=\rho_{x}u_{t}%
++\varepsilon_{t+1}%
+\]
+
+
+\item Do the unit root tests for $\pi_{t}$ and $i_{t}$. Are they consistent
+with your AR(1) estimations?
+
+\item Estimate the AR(2) model. Check your estimates are close to the
+following combination of parameters of the AR(1)-AR(1):
+\begin{align*}
+\pi_{t+1} &  =\left(  \lambda_{\pi}+\rho_{\pi}\right)  \pi_{t}-\lambda_{\pi
+}\rho_{\pi}\pi_{t-1}+u_{t+1}\text{ with }u_{t+1}=\mu_{\pi}u_{t}+\varepsilon
+_{t+1}\\
+\text{ }i_{t+1} &  =\left(  \lambda_{i}+\rho_{i}\right)  i_{t}-\lambda_{i}%
+\rho_{i}\pi_{t-1}+u_{t+1}\text{with }u_{t+1}=\mu_{i}u_{t}+\varepsilon_{t+1}%
+\end{align*}
+
+
+\item Compute the roots of the characteristic polynomial of your AR(2)
+estimations. Are they real roots or complex conjugate? Are they within the
+unit disk of complex numbers for stability. This is valid also for following
+questions: Beware, some code may propose you the solution with a polynomial
+where $Z=1/X$ with the inverse of the roots, so that for example $X^{2}$ in
+the equation below is $1$ after simplication. As well for the roots of VAR,
+nearly all your roots are inside the unit disk. If the code provides you all
+of them outside the unit disk, you need to compute their inverse with their
+proper value to be inside the unit disk, please, double check and think.
+\[
+X^{2}-\left(  \lambda_{\pi}+\rho_{\pi}\right)  X-\lambda_{\pi}\rho_{\pi}=0
+\]
+
+
+\item Draw the stability triangle for the AR(2) model with sum of the roots on
+the horizontal axis and product of the roots on the vertical axis. Are the sum
+and product within the stability triangle (so that the roots are within the
+unit disk of complex numbers $\left\vert \rho_{\pi}\right\vert <1$ and
+$\left\vert \lambda_{\pi}\right\vert <1$). Check whether the roots are complex
+conjugate or two real roots in the stability triangle with respect to their
+location of sum and product with respect to the quadratic curve corresponding
+to the discriminant of the characteristic polynomial.
+
+\item Check the partial autocorrelation order $p$ where the order $p+1$ leads
+to a partial autocorrelation not statistically different from zero (i.e. test
+the order of the AR(p) model).
+
+\item For an AR(p), $p\geq2$, for measuring persistence, should you consider
+the first auto-regressive parameter only or the sum of the auto-regressive
+parameters? A\ PhD\ student (who has forgotten this exercise) comes to you and
+states: look the auto-regressive parameter (the first one of the AR(2)) is
+$1.4$, it is very much above one with a monthly or quarterly deterministic
+trend with 40\% growth rate (but he does not discuss the second autoregressive
+estimate which is $-0.4$). So he says, there is necessarily a unit root! What
+do you answer to him?
+
+\item In VAR\ estimation, are the residuals supposed to be white noise or
+auto-regressive? What is the difference between weak white noise and strong
+white noise? Which are the null hypothesis and the statistics of the Ljung-Box
+(portmanteau) test?
+
+\item DSGE models estimations add systematically auto-regressive shocks to
+each equation. They give a particular "insightful" name of each of these
+shocks (see Paul Romer critique of DSGE models). Half of these auto-regressive
+parameters turn to be estimated to be close to unit root using "Bayesian"
+estimation (see e.g. Smets and Wouters paper). Having not only persistent
+residuals but also some residuals with unit root: is it expected to be valid
+in VAR\ or VECM? Check various LLM\ answers on evidence or not that Bayesian
+econometrics in DSGE\ models deny the importance of unit roots for time series
+of shocks?
+
+\item Explain the observational equivalence with AR(1)+AR(1) versus AR(2)? Is
+this observational equivalence possible if the AR(2) process has two complex
+conjugate roots?
+
+\item Estimate with 10 years rolling windows the auto-correlation coeffcient
+of AR(1) for the policy instrument and the policy target. Plot estimates over
+time. Do you distinguish different periods for distinct values of persistence:
+unit root or stationary process?
+
+\item Let's investigate if we have at least three year periods of a regime
+with trend inflation. Estimate three years rolling windows of the
+deterministic trend equation for the policy target. Plot time-varying
+estimates of the trend $g$ parameter as a function of time:
+\[
+Ln(\pi_{t+1})=a+gt+\varepsilon
+\]
+
+
+\item For unit root periods (auto-correlation close to one) of the policy
+target, if you notice on the graph of the time series a rising trend subperiod
+and estimate a determenistic trend on this subperiod: $Ln(\pi_{t+1}%
+)=a+gt+\varepsilon$ ($g>0$). Do the same if you notice a subperiod with
+declining trend: $Ln(\pi_{t+1})=a+gt+\varepsilon$ ($g<0$). Remark: $E_{0}%
+\pi_{t+1}=\left(  1+g\right)  ^{t}\pi_{0}$ implies $Ln(E_{0}\pi_{t+1}%
+)=Ln(\pi_{0})+tLn(1+g)\approx Ln(\pi_{0})+gt$ if $g$ small.
+
+\item Test for unit roots for policy instrument and target (on distinct
+periods if shifts of stationarity). Comment the results.
+
+\item Provides tables of cross-correlation of the policy instrument $i_{t}$
+with the policy target $\pi_{t+2}$, $\pi_{t+1}$, $\pi_{t}$,$\pi_{t-1}$%
+,$\pi_{t-2}$. Plot 10 years rolling windows of these cross-correlations (if
+possible). Comment the results.
+
+\item Using 10 years rolling windows of the estimation of the first order
+single input single output model (estimate also the auto-correlation of order
+one of the residuals for each equation):%
+\begin{align*}
+\pi_{t+1} &  =A\pi_{t}+Bi_{t}+u_{t+1}\text{ with }u_{t+1}=\rho u_{t}%
++\varepsilon_{t+1}\\
+\text{ }i_{t} &  =F\pi_{t}+u_{t+1}\text{ with }u_{t+1}=\rho u_{t}%
++\varepsilon_{t+1}%
+\end{align*}
+
+
+\item Using 10 years rolling windows, compute $A+BF$ and compare it to your
+AR(1) estimate $\lambda_{\pi}$ of inflation:%
+\begin{align*}
+\pi_{t+1} &  =(A+BF)\pi_{t}+u_{t+1}\text{ with }u_{t+1}=\rho u_{t}%
++\varepsilon_{t+1}\\
+\text{ }\pi_{t+1} &  =\lambda_{\pi}\pi_{t}+u_{t+1}\text{ with }u_{t+1}=\rho
+u_{t}+\varepsilon_{t+1}%
+\end{align*}
+
+
+\item Plot $A$, $B$, $F$, $A+BF$ for rolling windows on the same graph. How is
+this comparison related to the Lucas' critique ? Regarding the signs of
+estimates of $B$ and $F$, do you conclude to positive feedback or negative
+feedback ($0<A+BF<A$) taking into account the estimated values of the policy
+rule parameter?
+
+\item Redo the last 3\ questions with all variables in first differences (try
+your luck).
+
+\item Longest period single estimate. Here are the general formulas from
+descriptive statistics to estimated parameters in the trivariate regression
+case:%
+\begin{align*}
+\pi_{t+1} &  =\frac{r\left(  \pi_{t+1},\pi_{t}\right)  -r\left(  \pi
+_{t+1},i_{t}\right)  r\left(  i,\pi_{t}\right)  }{1-r^{2}\left(  \pi_{t}%
+,i_{t}\right)  }\frac{\sigma\left(  \pi_{t+1}\right)  }{\sigma\left(  \pi
+_{t}\right)  }\pi_{t}+\frac{r\left(  \pi_{t+1},i_{t}\right)  -r\left(
+\pi_{t+1},\pi_{t}\right)  r\left(  \pi_{t},i_{t}\right)  }{1-r^{2}\left(
+\pi_{t},i_{t}\right)  }\frac{\sigma\left(  \pi_{t+1}\right)  }{\sigma\left(
+i_{t}\right)  }i_{t}+u_{t+1}\\
+i_{t} &  =r\left(  i_{t},\pi_{t}\right)  \frac{\sigma\left(  i_{t}\right)
+}{\sigma\left(  \pi_{t}\right)  }\pi_{t}+v_{t}\text{ which decomposes:
+}F=r\left(  i_{t},\pi_{t}\right)  \frac{\sigma\left(  i_{t}\right)  }%
+{\sigma\left(  \pi_{t}\right)  }\\
+\pi_{t+1} &  =r\left(  \pi_{t+1},\pi_{t}\right)  \frac{\sigma\left(  \pi
+_{t+1}\right)  }{\sigma\left(  \pi_{t}\right)  }\pi_{t}+w_{t}\text{, which
+decomposes: }\lambda_{\pi}=r\left(  i_{t},\pi_{t}\right)  \frac{\sigma\left(
+i_{t}\right)  }{\sigma\left(  \pi_{t}\right)  }%
+\end{align*}
+Could you replace the numerical values of descriptive statistcs in each
+formulas and comment from this decomposition and as well comment again on the
+decomposition between $\lambda_{\pi}$ and $A+BF$ for the longest period single estimates?
+
+\item Plot rolling windows estimates of simple correlation and standard errors
+of $r(\pi_{t},i_{t})$ and the ratio of standard errors of the policy
+instruments over the policy target ($\frac{\sigma_{\pi}}{\sigma_{i}}$) and of
+the estimated $\widehat{F}_{\pi}$ parameter of the simple regression between
+the policy instrument [you may compute this ratio and plot the three variables
+over time using excel] over your extended period for windows of 10 (and/or 15
+years). Comment and interpret the change of the feedback rule parameters over
+time depending on the changes of the two times over time $r(\pi_{t},i_{t})$
+and ($\frac{\sigma_{\pi}}{\sigma_{i}}$) in its decomposition (and in
+particular when $F$ is larger than one):%
+\[
+F_{\pi}=r\left(  i_{t},\pi_{t}\right)  \frac{\sigma_{i}}{\sigma_{\pi}%
+}>1\Leftrightarrow0<\frac{\sigma_{\pi}}{\sigma_{i}}<r\left(  i_{t},\pi
+_{t}\right)  <1
+\]
+
+
+\item Indirect least square with simultaneous equations. It is very hard to
+find the instruments with true zero restrictions in the structural model.
+Indirect least square estimation: Solve the two structural parameters $B$ and
+$F$ as rational functions of some of the four reduced form estimated
+parameters $\left(  \beta_{\pi y},\beta_{\pi y},\beta_{\pi y},\beta_{\pi
+y}\right)  $ of the reduced form system of equations $(S_{R})$:
+\[
+(S_{1}):\left\{
+\begin{array}
+[c]{c}%
+\pi_{t}=Bi_{t}+Gy_{t}+0z_{t}+\varepsilon_{t}\\
+i_{t}=F\pi_{t}+0y_{t}+Hz_{t}+\eta_{t}%
+\end{array}
+\right.  \Leftrightarrow(S_{R}):\left\{
+\begin{array}
+[c]{c}%
+\pi_{t}=\beta_{\pi y}y_{t}+\beta_{\pi z}z_{t}+\varepsilon_{R,t}\\
+i_{t}=\beta_{iy}y_{t}+\beta_{iz}z_{t}+\eta_{R,t}%
+\end{array}
+\right.
+\]
+You find:%
+\[
+\widehat{F}=\frac{\beta_{iy}}{\beta_{\pi y}}\text{ and }\widehat{B}%
+=\frac{\beta_{\pi z}}{\beta_{iz}}%
+\]
+Upon your preferences, you seek and download variables $y_{t}$ and $z_{t}$ and
+estimate $(S_{R})$ with identification restrictions in the system $(S_{1})$,
+setting their parameter to zero in each of the two structural equations. You
+recover estimates of $\widehat{B}$ and $\widehat{F}$. Your results have 98\%
+chances of not being "succesful" for finding opposite signs on some periods
+for $\widehat{B}$ and $\widehat{F}$. You have a large choice: congressional
+budget office output gap, other measures of output gap, measures of output,
+employment or unemployment, measures of core inflation, monetary aggregates,
+indicators of the Fed balance sheet relative to quantitative easing, public
+debt (divided by gdp or it growth rate), credit to the private sector, asset
+prices, housing prices, exchange rate, price of oil, dummy variables for
+changes of Fed chairman or US president, dummy variables from monetary or
+fiscal policy shocks found in other studies, forecast errors with respect to
+announcements taken from financial markets indicators or business surveys. If
+you use other price indices, for inflation or returns, you need to compute the
+first differences of natural logarithm or the growth rate of these time series.
+
+\item Check that you do not have weak instruments in each equation of
+$(S_{R})$ with $R^{2}>0.1$.
+
+\item Try a rolling regression with 6 quarter lag between interest rat!e and
+inflation in the hope of having a negative sign for $B$:%
+\begin{align*}
+\pi_{t+1} &  =A\pi_{t-1}+Bi_{t-6}+u_{t+1}\text{ with }u_{t+1}=\rho
+u_{t}+\varepsilon_{t+1}\\
+\text{ }i_{t} &  =F\pi_{t}+u_{t+1}\text{ with }u_{t+1}=\rho u_{t}%
++\varepsilon_{t+1}%
+\end{align*}
+
+
+\textbf{PART 5: Replication of one method by your preferred  reference paper
+found after your LLM\ investigations}
+
+\item Use one method of the paper you find to replicate on your data set to
+run an estimation (you may add several varaibles) attempting to do a sign flip
+including your policy target and your policy instrument (and possibly other
+variables) in order to solve the price puzzle obtaining a sign flip $B<0$. It
+is NOT\ a problem if you fail. If you run a VAR: (1) show the unit disk with
+the roots of the VAR and comment if there are still roots close to unit roots
+(2) Mention if the parameters of the lagged dependent variable remain close to
+one (main diagonal), in this case, there remains very little variance to be
+explained by other variables, even though those variables are statistically
+significant with $T>200$.
+\end{enumerate}
+
+\textbf{APPENDIX: STATA\ CODE: }2018mavroeidisJBexamrolling09.do
+
+*******************************************
+
+* fyff federal funds rate and inflation
+
+* Pre-Volcker: 1960:Q1 to 1979:Q2
+
+* Greenspan's period: 1987:Q3 to 2006:Q1.
+
+* generate: to be run only one time in a session
+
+* CRTL D after selecting lines from top.
+
+* capture log close
+
+* log using mavroeidisJBexam.txt, text replace
+
+*******************************************
+
+set more off
+
+version 10.1
+
+clear all
+
+set memory 30m
+
+set linesize 90
+
+cd D:%
+%TCIMACRO{\TEXTsymbol{\backslash}}%
+%BeginExpansion
+$\backslash$%
+%EndExpansion
+Utilisateurs%
+%TCIMACRO{\TEXTsymbol{\backslash}}%
+%BeginExpansion
+$\backslash$%
+%EndExpansion
+j.chatelain%
+%TCIMACRO{\TEXTsymbol{\backslash}}%
+%BeginExpansion
+$\backslash$%
+%EndExpansion
+Documents%
+%TCIMACRO{\TEXTsymbol{\backslash}}%
+%BeginExpansion
+$\backslash$%
+%EndExpansion
+\_Mes\_do1%
+%TCIMACRO{\TEXTsymbol{\backslash}}%
+%BeginExpansion
+$\backslash$%
+%EndExpansion
+\_\_\_\_Rech%
+%TCIMACRO{\TEXTsymbol{\backslash}}%
+%BeginExpansion
+$\backslash$%
+%EndExpansion
+\_\_\_\_Art-KJB%
+%TCIMACRO{\TEXTsymbol{\backslash}}%
+%BeginExpansion
+$\backslash$%
+%EndExpansion
+\_0\_\_0closedloop\_Stata
+
+** cd E:%
+%TCIMACRO{\TEXTsymbol{\backslash}}%
+%BeginExpansion
+$\backslash$%
+%EndExpansion
+
+
+use mavroeidis2010
+
+describe
+
+gen newt = tq(1960q1) + t - 1
+
+tsset newt, quarterly
+
+describe
+
+gen linflation = l.inflation
+
+gen dinflation = inflation - linflation
+
+gen lfyff = l.fyff
+
+gen dfyff = fyff - lfyff
+
+gen l2fyff = l.lfyff
+
+gen lgapcbo = l.gapcbo
+
+gen dgapcbo = gapcbo-lgapcbo
+
+gen realrate=-1+((1+fyff)/(1+inflation))
+
+gen lrealrate = lfyff - linflation
+
+egen stdinflation = std(inflation)
+
+egen stdfyff = std(fyff)
+
+gen absstdinflation = abs(stdinflation)
+
+gen absstdfyff = abs(stdfyff)
+
+generate id1=(tt%
+%TCIMACRO{\TEXTsymbol{>}}%
+%BeginExpansion
+$>$%
+%EndExpansion
+78)
+
+generate id2=(tt%
+%TCIMACRO{\TEXTsymbol{>}}%
+%BeginExpansion
+$>$%
+%EndExpansion
+88)
+
+********** ROLLING WINDOW**********
+
+* For any reason, one may need to begin again the code at the top
+
+* for each rolling regression as variables may not be kept
+
+* in memory. quarterly window(40) 10 years of 4 quarters
+
+*****************************************
+
+/*
+
+* rolling 1st order SISO, policy instrument rule and autocorrelation of policy target
+
+rolling, window(40) clear: nlsur
+(inflation=\{binflation=0.56\}*linflation+\{bfyff=-0.04\}*lfyff+\{meaninflation\})
+///
+
+(fyff=\{Taylorinflation=-0.16\}*inflation+\{meanfyff\}) ///
+
+(inflation=\{autocorrinflation=-0.16\}*linflation+\{b7\}) ///
+
+if tt%
+%TCIMACRO{\TEXTsymbol{>}}%
+%BeginExpansion
+$>$%
+%EndExpansion
+1
+
+tsset start
+
+list autocorrinflation binflation bfyff Taylorinflation meaninflation meanfyff
+
+tsline autocorrinflation binflation bfyff Taylorinflation
+
+* rolling correlation
+
+rolling correlation=r(rho), window(40) clear: corr fyff inflation
+
+tsset start
+
+tsline correlation
+
+* rolling correlation with mvcorr
+
+ssc install mvcorr
+
+mvcorr inflation fyff, window(40) gen(rho)
+
+list rho
+
+tsline rho
+
+* rolling single standard deviation
+
+rolling SD = r(sd), window(40) clear: summarize inflation
+
+tsset start\qquad
+
+tsline SD
+
+* rolling single standard deviation
+
+rolling SD = r(sd), window(40) clear: summarize fyff
+
+tsset start
+
+tsline SD
+
+* rolling regression with output gap window(80)
+
+rolling, window(60) clear: reg fyff lfyff linflation lgapcbo
+
+tsset start
+
+tsline \_b\_cons \_b\_lfyff \_b\_linflation \_b\_lgapcbo
+
+* rolling Taylor rule with output gap window(80)
+
+rolling, window(80) clear: reg fyff lfyff linflation lgapcbo
+
+tsset start
+
+tsline \_b\_cons \_b\_lfyff \_b\_linflation \_b\_lgapcbo
+
+* rolling Taylor rule with output gap window(80)
+
+reg inflation L(1/3).inflation, r
+
+reg inflation L(1/1).inflation, r
+
+rolling, window(80) clear: regress inflation L(1/1).inflation
+
+tsset start
+
+tsline \_b\_cons \_stat\_1
+
+tsline \_stat\_1
+
+*/
+
+********************************************
+
+* You may skip with /* */ the rolling part
+
+* other tools
+
+********************************************
+
+****************************
+
+* time series plot
+
+****************************
+
+tsline inflation fyff , tline(1979q3) tline(1982q1)
+
+tsline inflation gapcbo , tline(1979q3) tline(1982q1)
+
+********************************************
+
+* univariate statistics
+
+********************************************
+
+sort id1 tt
+
+by id1: summarize inflation fyff realrate
+
+by id1: tabstat inflation fyff realrate, ///
+
+stat (count p50 mean sd min max skew kurtosis) col(stat)
+
+******************************************************
+
+* Taylor principle, serial correlation of residuals
+
+* bivariate plots
+
+********************************************************
+
+sort id1 tt
+
+by id1: pwcorr inflation fyff gapcbo
+
+* SORT by time-series to obtain lag: tsset t,q
+
+* conflict with sorting by structural break by id1
+
+tsset newt, quarterly
+
+* auto-correlation of residuals
+
+* of policy instrument rule on inflation
+
+reg fyff inflation if id1==0
+
+predict resid0 if id1==0, residual
+
+tabstat resid0 if id1==0, stat (count mean sd variance)
+
+reg resid0 l.resid0 if id1==0
+
+pwcorr resid0 l.resid0 if id1==0
+
+estat durbinalt, small lags(1/2)
+
+estat bgodfrey, small lags(1/2)
+
+arima resid0, arima(1,0,0)
+
+gen lresid0 = l.resid0
+
+reg fyff inflation if id1==1
+
+predict resid1 if id1==1, residual
+
+tabstat resid1 if id1==1, stat (count mean sd variance)
+
+reg resid1 l.resid1 if id1==1
+
+pwcorr resid1 l.resid1 if id1==1
+
+estat durbinalt, small lags(1/2)
+
+estat bgodfrey, small lags(1/2)
+
+gen lresid1 = l.resid1
+
+* PROC GPLOT BIVARIATE LINEAR QUADRATIC LINE PROC LOWESS
+
+graph twoway (scatter fyff inflation if id1==0, msize(large) msymbol(o)) ///
+
+(lfit fyff inflation if id1==0, clstyle(p3) lwidth(vvvthick)), ///
+
+plotregion(style(none)) ///
+
+title("Federal Funds Rate and inflation 1960q1-1979q2") ///
+
+xtitle("Inflation", size(medlarge)) xscale(titlegap(*5)) ///
+
+ytitle("Federal funds rate", size(medlarge)) yscale(titlegap(*5)) ///
+
+legend(pos(4) ring(0) col(1)) legend(size(small)) ///
+
+legend(label(1 "Actual Data") label(2 "Linear fit") label(3 "Quadratic fit")
+label(4 "Lowess"))
+
+graph twoway (scatter resid0 lresid0 if id1==0, msize(large) msymbol(o)) ///
+
+(lfit resid0 lresid0 if id1==0, clstyle(p3) lwidth(vvvthick)), ///
+
+plotregion(style(none)) ///
+
+title("Serial correlation of residuals 1960q1-1979q2") ///
+
+xtitle("lag1 residuals of Federal Funds Rate on Inflation", size(medlarge))
+xscale(titlegap(*5)) ///
+
+ytitle("residuals of Federal Funds Rate on Inflation", size(medlarge))
+yscale(titlegap(*5)) ///
+
+legend(pos(4) ring(0) col(1)) legend(size(small)) ///
+
+legend(label(1 "Actual Data") label(2 "Linear fit") label(3 "Quadratic fit")
+label(4 "Lowess"))
+
+graph twoway (scatter inflation linflation if id1==0, msize(large) msymbol(o)
+ysc(r(0 8.2)) ) ///
+
+(lfit inflation linflation if id1==0, clstyle(p3) lwidth(vvvthick)), ///
+
+plotregion(style(none)) ///
+
+title("Serial correlation of inflation id1==0") ///
+
+xtitle("lag1 inflation", size(medlarge)) xscale(titlegap(*5)) ///
+
+ytitle("inflation", size(medlarge)) yscale(titlegap(*5)) ///
+
+legend(pos(4) ring(0) col(1)) legend(size(small)) ///
+
+legend(label(1 "Actual Data") label(2 "Linear fit") label(3 "Quadratic fit")
+label(4 "Lowess"))
+
+graph twoway (scatter fyff lfyff if id1==0, msize(large) msymbol(o)) ///
+
+(lfit fyff lfyff if id1==0, clstyle(p3) lwidth(vvvthick)), ///
+
+plotregion(style(none)) ///
+
+title("Serial correlation of Federal Funds Rate if id1==0") ///
+
+xtitle("lag1 output gap", size(medlarge)) xscale(titlegap(*5)) ///
+
+ytitle("output gap", size(medlarge)) yscale(titlegap(*5)) ///
+
+legend(pos(4) ring(0) col(1)) legend(size(small)) ///
+
+legend(label(1 "Actual Data") label(2 "Linear fit") label(3 "Quadratic fit")
+label(4 "Lowess"))
+
+* PROC GPLOT BIVARIATE LINEAR QUADRATIC LINE PROC LOWESS id1==1
+
+graph twoway (scatter fyff inflation if id1==1, msize(large) msymbol(o)) ///
+
+(lfit fyff inflation if id1==1, clstyle(p3) lwidth(vvvthick)), ///
+
+plotregion(style(none)) ///
+
+title("Federal Funds Rate and inflation if id1==1") ///
+
+xtitle("Inflation", size(medlarge)) xscale(titlegap(*5)) ///
+
+ytitle("Federal funds rate", size(medlarge)) yscale(titlegap(*5)) ///
+
+legend(pos(4) ring(0) col(1)) legend(size(small)) ///
+
+legend(label(1 "Actual Data") label(2 "Linear fit") )
+
+graph twoway (scatter resid1 lresid1 if id1==1, msize(large) msymbol(o)) ///
+
+(lfit resid1 lresid1 if id1==1, clstyle(p3) lwidth(vvvthick)), ///
+
+plotregion(style(none)) ///
+
+title("Serial correlation of residuals if id1==1") ///
+
+xtitle("lag1 residuals of Federal Funds Rate on Inflation", size(medlarge))
+xscale(titlegap(*5)) ///
+
+ytitle("residuals of Federal Funds Rate on Inflation", size(medlarge))
+yscale(titlegap(*5)) ///
+
+legend(pos(4) ring(0) col(1)) legend(size(small)) ///
+
+legend(label(1 "Actual Data") label(2 "Linear fit") )
+
+graph twoway (scatter inflation linflation if id1==1, msize(large) msymbol(o)
+ysc(r(0 8.2)) ) ///
+
+(lfit inflation linflation if id1==1, clstyle(p3) lwidth(vvvthick)), ///
+
+plotregion(style(none)) ///
+
+title("Serial correlation of inflation id1==1") ///
+
+xtitle("lag1 inflation", size(medlarge)) xscale(titlegap(*5)) ///
+
+ytitle("inflation", size(medlarge)) yscale(titlegap(*5)) ///
+
+legend(pos(4) ring(0) col(1)) legend(size(small)) ///
+
+legend(label(1 "Actual Data") label(2 "Linear fit") label(3 "Quadratic fit")
+label(4 "Lowess"))
+
+graph twoway (scatter fyff lfyff if id1==1, msize(large) msymbol(o)) ///
+
+(lfit fyff lfyff if id1==1, clstyle(p3) lwidth(vvvthick)), ///
+
+plotregion(style(none)) ///
+
+title("Serial correlation of Federal Funds Rate if id1==1") ///
+
+xtitle("lag1 output gap", size(medlarge)) xscale(titlegap(*5)) ///
+
+ytitle("output gap", size(medlarge)) yscale(titlegap(*5)) ///
+
+legend(pos(4) ring(0) col(1)) legend(size(small)) ///
+
+legend(label(1 "Actual Data") label(2 "Linear fit") label(3 "Quadratic fit")
+label(4 "Lowess"))
+
+***************************************
+
+* AR(1)
+
+***************************************
+
+sort id1
+
+by id1: pwcorr inflation linflation
+
+by id1: reg inflation linflation
+
+by id1: pwcorr fyff lfyff
+
+by id1: reg fyff lfyff
+
+tsset newt, quarterly
+
+corrgram inflation if id2==0, lag(8)
+
+ac inflation if id2==0, lag(8)
+
+corrgram inflation if id2==1, lag(8)
+
+ac inflation if id2==1, lag(8)
+
+corrgram fyff if id2==0, lag(4)
+
+ac fyff if id2==0, lag(4)
+
+corrgram fyff if id2==1, lag(4)
+
+ac fyff if id2==1, lag(4)
+
+arima inflation if id1==0, arima(1,0,0)
+
+reg inflation linflation if id1==0
+
+predict arinfl0 if id1==0, residual
+
+tabstat arinfl0 if id1==0, stat (count mean sd variance)
+
+pwcorr arinfl0 l.arinfl0 if id1==0
+
+reg arinfl0 l.arinfl0 if id1==0
+
+arima arinfl0, arima(1,0,0)
+
+arima inflation if id1==1, arima(1,0,0)
+
+reg inflation linflation if id1==1
+
+predict arinfl1 if id1==1, residual
+
+tabstat arinfl1 if id1==1, stat (count mean sd variance)
+
+pwcorr arinfl1 l.arinfl1 if id1==1
+
+reg arinfl1 l.arinfl1 if id1==1
+
+arima arinfl1, arima(1,0,0)
+
+arima fyff if id1==0, arima(1,0,0)
+
+reg fyff lfyff if id1==0
+
+predict arfyff0 if id1==0, residual
+
+tabstat arfyff0 if id1==0, stat (count mean sd variance)
+
+pwcorr arfyff0 l.arfyff0 if id1==0
+
+reg arfyff0 l.arfyff0 if id1==0
+
+arima arfyff0, arima(1,0,0)
+
+arima fyff if id1==1, arima(1,0,0)
+
+reg fyff lfyff if id1==1
+
+predict arfyff1 if id1==1, residual
+
+tabstat arfyff1 if id1==1, stat (count mean sd variance)
+
+pwcorr arfyff1 l.arfyff1 if id1==1
+
+reg arfyff1 l.arfyff1 if id1==1
+
+arima arfyff1, arima(1,0,0)
+
+********************
+
+* unit root tests
+
+************************
+
+dfuller inflation if id1==0, notrend lag(1)
+
+dfuller fyff if id1==0, notrend lag(1)
+
+dfuller inflation if id1==1, notrend lag(1)
+
+dfuller fyff if id1==1, notrend lag(1)
+
+pperron inflation if id1==0, lag(1)
+
+pperron fyff if id1==0, lag(1)
+
+pperron inflation if id1==1, lag(1)
+
+pperron fyff if id1==1, lag(1)
+
+dfgls inflation if id1==0, notrend maxlag(1)
+
+dfgls fyff if id1==0, notrend maxlag(1)
+
+dfgls inflation if id1==1, notrend maxlag(1)
+
+dfgls fyff if id1==1, notrend maxlag(1)
+
+********************************************
+
+* unconstrained VAR for comparison
+
+********************************************
+
+* VAR non contraint with constants
+
+sort id2
+
+by id2: var inflation fyff, lag(1 2)
+
+varstable, graph
+
+vargranger
+
+varlmar, mlag(3)
+
+sort id1
+
+var inflation fyff if id1==0, lag(1)
+
+varstable, graph
+
+vargranger
+
+varlmar, mlag(3)
+
+predict residinf00, equation(\#1) residuals
+
+predict residfyff00, equation(\#2) residuals
+
+summarize residinf00 residfyff00 if id1==0
+
+sort id1
+
+reg residinf00 l.residinf00 linflation lfyff if id1==0
+
+reg residinf00 l.residinf00 if id1==0
+
+pwcorr residinf00 l.residinf00 if id1==0
+
+reg residfyff00 l.residfyff00 linflation lfyff if id1==0
+
+reg residfyff00 l.residfyff00 if id1==0
+
+pwcorr residfyff00 l.residfyff00 if id1==0
+
+* Verifie NLSUR=VAR with constants
+
+nlsur ///
+
+(inflation=\{b1=0.56\}*linflation+\{b2=-0.04\}*lfyff+\{b3\}) ///
+
+(fyff=\{b4=-0.16\}*linflation+\{b5=0.91\}*lfyff+\{b6\}) ///
+
+if tt%
+%TCIMACRO{\TEXTsymbol{>}}%
+%BeginExpansion
+$>$%
+%EndExpansion
+1 \& id1==0
+
+*****************************
+
+* unconstrained VAR(1)
+
+*****************************
+
+var inflation fyff if id1==0, lag(1)
+
+varstable, graph
+
+vargranger
+
+varlmar, mlag(1)
+
+var inflation fyff if id1==1, lag(1)
+
+varstable, graph
+
+vargranger
+
+varlmar, mlag(1)
+
+var inflation fyff if id1==0, lag(1)
+
+predict evarinfl0 if id1==0, residuals equation(inflation)
+
+predict evarfyff0 if id1==0, residuals equation(fyff)
+
+tabstat evarinfl0 evarfyff0 if id1==0, stat (count mean sd variance)
+
+pwcorr evarinfl0 l.evarinfl0 evarfyff0 l.evarfyff0 if id1==0
+
+reg evarinfl0 l.evarinfl0 if id1==0
+
+reg evarfyff0 l.evarfyff0 if id1==0
+
+var inflation fyff if id1==1, lag(1)
+
+predict evarinfl1 if id1==1, residuals equation(inflation)
+
+predict evarfyff1 if id1==1, residuals equation(fyff)
+
+tabstat evarinfl1 evarfyff1 if id1==1, stat (count mean sd variance)
+
+pwcorr evarinfl1 l.evarinfl1 evarfyff1 l.evarfyff1 if id1==1
+
+reg evarinfl1 l.evarinfl1 if id1==1
+
+reg evarfyff1 l.evarfyff1 if id1==1
+
+* IRF FIGURES VAR(1)
+
+varbasic inflation fyff if id1==0, lag(1)
+
+irf graph fevd, lstep(1)
+
+varbasic inflation fyff if id1==1, lag(1)
+
+irf graph fevd, lstep(1)
+
+**********************************************************
+
+* cross correlogram inflation federal funds rate
+
+**********************************************************
+
+sort id1
+
+by id1: pwcorr linflation fyff
+
+by id1: pwcorr inflation fyff
+
+by id1: pwcorr inflation lfyff
+
+tsset newt, quarterly
+
+xcorr inflation fyff if id1==0, table lags(1)
+
+xcorr inflation fyff if id1==1, table lags(1)
+
+xcorr inflation fyff if id1==0, lags(4)
+
+xcorr inflation fyff if id1==1, lags(4)
+
+********************************************
+
+* Estimate A+BF, A, B and F over two subperiods
+
+********************************************
+
+* Verifie VAR non contraint with constants
+
+pwcorr inflation gapcbo fyff realrate if id1==0
+
+var inflation fyff gapcbo if id1==0, lag(1)
+
+var gapcbo if id1==0, lag(1)
+
+sort id2
+
+by id2: pwcorr inflation linflation gapcbo lgapcbo fyff lfyff realrate lrealrate
+
+sort id1
+
+by id1: pwcorr inflation linflation gapcbo lgapcbo fyff lfyff realrate lrealrate
+
+* Estimate A+BF, A, B and F over two subperiods
+
+sort id1
+
+by id1: nlsur ///
+
+(inflation=\{autoinfl=0.56\}*linflation+\{cinflAR1\}) ///
+
+(inflation=\{A=0.56\}*linflation+\{B=-0.04\}*lfyff+\{cinfl\}) ///
+
+(fyff=\{F=-0.16\}*inflation+\{cfyff\}) ///
+
+if tt%
+%TCIMACRO{\TEXTsymbol{>}}%
+%BeginExpansion
+$>$%
+%EndExpansion
+1
+
+sort id2
+
+by id2: nlsur ///
+
+(inflation=\{autoinfl=0.56\}*linflation+\{cinflAR1\}) ///
+
+(inflation=\{A=0.56\}*linflation+\{B=-0.04\}*lfyff+\{cinfl\}) ///
+
+(fyff=\{F=-0.16\}*inflation+\{cfyff\}) ///
+
+if tt%
+%TCIMACRO{\TEXTsymbol{>}}%
+%BeginExpansion
+$>$%
+%EndExpansion
+1
+
+sort id2
+
+by id2: pwcorr inflation linflation fyff lfyff gapcbo lgapcbo
+
+sort id2
+
+by id2: ///
+
+var inflation fyff, lag(1)
+
+varstable
+
+* add output gap in transmission mechanism of inflation: not relevant
+
+sort id2
+
+by id2: nlsur ///
+
+(inflation=\{autoinfl=0.56\}*linflation+\{cinflAR1\}) ///
+
+(inflation=\{Ainfl\}*linflation+\{Bfyff\}*lfyff+\{Bgap=-0.04\}*lgapcbo+\{cinfla\})
+///
+
+(fyff=\{Finlf=-0.16\}*inflation+\{Fgap\}*gapcbo+\{cfyff\}) ///
+
+(gapcbo=\{autogap\}*lgapcbo+\{cgapAR1\}) ///
+
+(gapcbo=\{Agap\}*lgapcbo+\{Bfyffgap\}*lfyff+\{Binflgap=-0.04\}*linflation+\{cgap\})
+///
+
+if tt%
+%TCIMACRO{\TEXTsymbol{>}}%
+%BeginExpansion
+$>$%
+%EndExpansion
+1
+
+* real rate in transmission: negative sign Volcker
+
+sort id2
+
+by id2: nlsur
+(inflation=\{binfl\}*linflation+\{brealrate\}*realrate+\{bgap=-0.04\}*gapcbo+\{cinfla\})
+///
+
+(fyff=\{b4=-0.16\}*inflation+\{b6\}) if tt%
+%TCIMACRO{\TEXTsymbol{>}}%
+%BeginExpansion
+$>$%
+%EndExpansion
+1
+
+sort id1
+
+by id1: nlsur
+(inflation=\{binfl\}*linflation+\{brealrate\}*realrate+\{bgap=-0.04\}*gapcbo+\{cinfla\})
+///
+
+(fyff=\{b4=-0.16\}*inflation+\{b6\}) if tt%
+%TCIMACRO{\TEXTsymbol{>}}%
+%BeginExpansion
+$>$%
+%EndExpansion
+1
+
+*********************************************************
+
+* TAYLOR RULE with 2 lags auto-correlation of residuals
+
+**********************************************************
+
+reg fyff lfyff l2fyff linflation lgapcbo if id1==0
+
+predict residinf20, residuals
+
+reg residinf20 l.residinf20 linflation lgapcbo if id1==0
+
+reg residinf20 l.residinf20 if id1==0
+
+pwcorr residinf20 l.residinf20 if id1==0
+
+estat durbinalt, small lags(1/2)
+
+estat bgodfrey, small lags(1/2)
+
+reg fyff linflation lgapcbo if id1==0
+
+predict residinf201, residuals
+
+reg residinf201 l.residinf201 linflation lgapcbo if id1==0
+
+reg residinf201 l.residinf201 if id1==0
+
+pwcorr residinf201 l.residinf201 if id1==0
+
+estat durbinalt, small lags(1/2)
+
+estat bgodfrey, small lags(1/2)
+
+reg fyff lfyff l2fyff if id1==0
+
+predict residinf202, residuals
+
+reg residinf202 l.residinf202 linflation lgapcbo if id1==0
+
+reg residinf202 l.residinf202 if id1==0
+
+pwcorr residinf202 l.residinf202 if id1==0
+
+estat durbinalt, small lags(1/2)
+
+estat bgodfrey, small lags(1/2)
+
+reg fyff lfyff linflation if id1==0
+
+predict residinf203, residuals
+
+reg residinf203 l.residinf203 linflation lgapcbo if id1==0
+
+reg residinf203 l.residinf203 if id1==0
+
+pwcorr residinf203 l.residinf203 if id1==0
+
+estat durbinalt, small lags(1/2)
+
+estat bgodfrey, small lags(1/2)
+
+reg fyff lfyff lgapcbo if id1==0
+
+predict residinf204, residuals
+
+reg residinf204 l.residinf204 linflation lgapcbo if id1==0
+
+reg residinf204 l.residinf204 if id1==0
+
+pwcorr residinf204 l.residinf204 if id1==0
+
+estat durbinalt, small lags(1/2)
+
+estat bgodfrey, small lags(1/2)
+
+* TAYLOR RULE
+
+*by id1: reg fyff inflation gapcbo
+
+*by id1: reg fyff lfyff inflation gapcbo
+
+*by id1: nlsur (fyff=\{l\}*lfyff+(1-\{l\})*\{Fpi\}*inflation) if tt%
+%TCIMACRO{\TEXTsymbol{>}}%
+%BeginExpansion
+$>$%
+%EndExpansion
+1
+
+reg fyff inflation gapcbo if id1==0
+
+predict resid01 if id1==0, residual
+
+tabstat resid01 if id1==0, stat (count mean sd variance)
+
+pwcorr resid01 l.resid01 if id1==0
+
+reg resid01 l.resid01 if id1==0
+
+arima resid01, arima(1,0,0)
+
+reg fyff lfyff l2fyff inflation gapcbo if id1==0
+
+estat durbinalt, small lags(1/2)
+
+estat bgodfrey, small lagss(1/2)
+\end{document}
